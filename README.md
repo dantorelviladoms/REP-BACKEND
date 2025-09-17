@@ -1,9 +1,16 @@
-# BACK-END de DTL PREMIUM CAR-SELLER
-Version 0.1 Alpha
-Estado: Working 🔧
-Tecnologias -->
-BackEnd: Node.JS
-BBDD & MONGODB
+# BACK-END de DTL PREMIUM CAR-SELLER  
 
-SOFTWARE
-NODE, GIT, DOCKER, DOCKER-COMPOSE, POSTMAN, DOCKER COMPASS / TABLEPLUS
+**Versión:** 0.1 Alpha  
+**Estado:** Working 🔧  
+
+## Tecnologías  
+- **BackEnd:** Node.js  
+- **Base de Datos:** MongoDB  
+
+## Software  
+- Node  
+- Git  
+- Docker  
+- Docker Compose  
+- Postman  
+- Docker Compass / TablePlus  
