@@ -33,8 +33,8 @@
 
 ---
 
-## 1ª Fase (Requisitos)
-## Instalación
+## 1ª Fase
+## Instalación (Requisitos)
 1. MongoDB
 2. Docker
 ## Configuración
