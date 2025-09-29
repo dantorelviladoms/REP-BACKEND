@@ -30,3 +30,15 @@
 2. Escalabilidad para soportar más usuarios y vehículos.  
 3. Disponibilidad alta y backups de la base de datos.  
 4. API REST clara y documentada.  
+
+---
+
+## 1ª Fase (Requisitos)
+## Instalación
+1. MongoDB
+2. Docker
+## Configuración
+1. En Docker, creamos el contenedor para insertar posteriormente la BBDD de MongoDB.
+2. En Docker, descargamos la imagen de Mongo, y la insertamos dentro del contenedor.
+3. Comprobamos que el container con la imagen insertada, inicie correctamente.
+4. Entramos en MongoDB, creamos la conexión con la base de datos, autentificandonos con las credenciales privadas anteriormente declaradas.
