@@ -1,0 +1,10 @@
+# ADR-001: Base de dades del projecte
+## Context
+Necessitem una base de dades flexible per a emmagatzemar productes, usuaris i
+comandes amb relacions no rígides.
+## Decisió
+Farem servir MongoDB com a base de dades principal, gestionada via Docker.
+## Conseqüències
++ Flexibilitat per a nous camps i entitats.
++ Bona integració amb Node/Express.
+- Menys adequat per a consultes molt relacionals
