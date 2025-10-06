@@ -42,3 +42,8 @@
 2. En Docker, descargamos la imagen de Mongo, y la insertamos dentro del contenedor.
 3. Comprobamos que el container con la imagen insertada, inicie correctamente.
 4. Entramos en MongoDB, creamos la conexión con la base de datos, autentificandonos con las credenciales privadas anteriormente declaradas.
+
+## 2ª Fase
+## Investigación de entidades y relaciones
+1. Identificamos las entidades del e-commerce, con sus campos y atributos, junto a sus relaciones.
+2. Creamos el diagrama en Draw.io, con sus campos, atributos
