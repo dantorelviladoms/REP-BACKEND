@@ -46,4 +46,28 @@
 ## 2ª Fase
 ## Investigación de entidades y relaciones
 1. Identificamos las entidades del e-commerce, con sus campos y atributos, junto a sus relaciones.
-2. Creamos el diagrama en Draw.io, con sus campos, atributos
+2. En Github, creamos el directorio docs/diagrams, donde posteriormente insertaremos el .png del diagrama de entidades.
+3. Creamos el diagrama en Draw.io, con sus campos, atributos.
+## Creación de los primeros ADR's
+1. En Github, creamos el directorio docs/adrs, donde posteriormente insertaremos los archivos de ADR's.
+2. Creamos los ADR's, con los apartados obligatorios, contexto, decisión, consecuencias...
+
+## 3º Fase
+## Inicialización del proyecto
+1. Creamos el directorio /api
+2. Inicializamos el proyecto des del Backend
+3. Trasladamos los archivos creados anteriormente al directorio /api, siguiendo esta estructura:
+  api/
+  ├── src/
+  │ ├── index.js
+  │ ├── config/db.js
+  │ └── models/
+  ├── .env
+  ├── .gitignore
+  └── package.json
+4. Desarrollamos el contenido básico del index.js, con algun mensaje de prueba aparte de la configuración previa para ver que todo funciona correcto.
+5. Añadimos el script en el archivo --> package.json.
+## Instalación y Configuracion Mongoose
+1. Definimos el fichero src/config/db.js , volviendo a dejar algun mensaje de prueba de la configuración para ver que todo funciona correcto.
+2. Añadimos la nueva variable al .env.
+3. Creamos el directorio src/models/, donde posteriormente, desarrollaremos los modelos de dos de las clases principales (usuario y vehiculo), con sus validaciones e índices.
