@@ -13,7 +13,19 @@ const createVehiculo = async (req, res) => {
 // Obtener todos los vehículos
 const getVehiculos = async (req, res) => {
   try {
-    const vehiculos = await vehiculoService.getVehiculos();
+    // Extraer parámetros de query
+    const filters = {
+      marca: req.query.marca,
+      precioMin: req.query.precioMin,
+      precioMax: req.query.precioMax,
+      potenciaMin: req.query.potenciaMin,
+      potenciaMax: req.query.potenciaMax,
+      color: req.query.color,
+      sortBy: req.query.sortBy,
+      sortOrder: req.query.sortOrder
+    };
+
+    const vehiculos = await vehiculoService.getVehiculos(filters);
     res.json({ status: 'success', data: vehiculos });
   } catch (error) {
     res.status(500).json({ status: 'error', message: error.message });

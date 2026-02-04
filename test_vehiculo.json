@@ -1,15 +1,28 @@
 {
-  "vin": "1HGCM82633A004571",
-  "marca": "Toyota",
-  "modelo": "Corolla",
-  "ano": 2023,
-  "kilometraje": 15000,
+  "_id": {
+    "$oid": "6979d979bca39c3db4d734b3"
+  },
+  "vin": "WVWZZZ3CZWE123456",
+  "marca": "Maserati",
+  "modelo": "Levante",
+  "ano": 2017,
+  "kilometraje": 88000,
   "combustible": "gasolina",
-  "transmision": "manual",
-  "potencia": 140,
+  "transmision": "automática",
+  "potencia": 430,
   "plazas": 5,
-  "color": "Blanco",
   "estado": "usado",
-  "precio": 25000,
-  "garantia": "no"
+  "precio": 43000,
+  "garantia": "no",
+  "imageFile": "maserati.jpg",
+  "fecha_publicacion": {
+    "$date": "2026-01-28T09:40:09.307Z"
+  },
+  "createdAt": {
+    "$date": "2026-01-28T09:40:09.308Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-28T09:40:09.308Z"
+  },
+  "__v": 0
 }
