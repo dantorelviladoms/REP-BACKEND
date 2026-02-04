@@ -38,8 +38,8 @@ const ventaSchema = new mongoose.Schema(
 );
 
 // Índices recomendados
-ventaSchema.index({ id_usuario: 1 });
-ventaSchema.index({ id_producto: 1 });
-ventaSchema.index({ estado: 1 });
+//ventaSchema.index({ id_usuario: 1 });
+//ventaSchema.index({ id_producto: 1 });
+//ventaSchema.index({ estado: 1 });
 
 module.exports = mongoose.model("Venta", ventaSchema);

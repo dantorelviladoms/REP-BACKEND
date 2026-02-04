@@ -1,30 +1,34 @@
-const Product = require('../models/vehiculo');
+const Vehiculo = require('../models/vehiculo');
 
-const createProduct = async (productData) => {
-  const newProduct = new Product(productData);
-  return await newProduct.save();
+const createVehiculo = async (vehiculoData) => {
+  const newVehiculo = new Vehiculo(vehiculoData);
+  return await newVehiculo.save();
 };
 
-const getAllProducts = async (filter = {}) => {
-  return await Product.find(filter);
+/*const getVehiculos = async (filter = {}) => {
+  return await Vehiculo.find(filter);
+};*/
+
+const getVehiculos = async () => {
+  return await Vehiculo.find();
 };
 
-const getProductById = async (id) => {
-  return await Product.findById(id);
+const getVehiculoById = async (id) => {
+  return await Vehiculo.findById(id);
 };
 
-const updateProduct = async (id, updateData) => {
-  return await Product.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+const updateVehiculo = async (id, updateData) => {
+  return await Vehiculo.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
 };
 
-const deleteProduct = async (id) => {
-  return await Product.findByIdAndDelete(id);
+const deleteVehiculo = async (id) => {
+  return await Vehiculo.findByIdAndDelete(id);
 };
 
 module.exports = {
-  createProduct,
-  getAllProducts,
-  getProductById,
-  updateProduct,
-  deleteProduct
+  createVehiculo,
+  getVehiculos,
+  getVehiculoById,
+  updateVehiculo,
+  deleteVehiculo
 };

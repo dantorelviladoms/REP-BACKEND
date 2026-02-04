@@ -23,7 +23,7 @@ const vehiculoSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    año: {
+    ano: {
       type: Number,
       required: [true, "El año es obligatorio"],
       min: [1900, "El año no puede ser anterior a 1900"],
@@ -77,6 +77,10 @@ const vehiculoSchema = new mongoose.Schema(
       type: String,
       enum: ["sí", "no"],
       default: "no"
+    },
+    imageFile: {
+      type: String,
+      trim: true
     }
   },
   {
@@ -86,8 +90,8 @@ const vehiculoSchema = new mongoose.Schema(
 
 // Indices recomendados
 //vehiculoSchema.index({ vin: 1 }); 
-vehiculoSchema.index({ marca: 1, modelo: 1 }); 
-vehiculoSchema.index({ estado: 1 });
-vehiculoSchema.index({ precio: 1 });
+//vehiculoSchema.index({ marca: 1, modelo: 1 }); 
+//vehiculoSchema.index({ estado: 1 });
+//vehiculoSchema.index({ precio: 1 });
 
 module.exports = mongoose.model("Vehiculo", vehiculoSchema);

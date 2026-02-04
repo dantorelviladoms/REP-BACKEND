@@ -10,7 +10,11 @@ const getVentas = async (filter = {}) => {
 };
 
 const getVentaById = async (id) => {
-  return await Venta.findById(id);
+  return await Venta.findById(id).populate('id_producto');
+};
+
+const getVentasByUsuario = async (userId) => {
+  return await Venta.find({ id_usuario: userId }).populate('id_producto');
 };
 
 const updateVenta = async (id, updateData) => {
@@ -28,6 +32,7 @@ module.exports = {
   createVenta,
   getVentas,
   getVentaById,
+  getVentasByUsuario,
   updateVenta,
   deleteVenta
 };

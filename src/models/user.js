@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -56,8 +57,21 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Índices adicionales
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1 });
+// Este es el hook para encriptar la contraseña antes de guardar
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next(); // solo si la contraseña es nueva o cambiada
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+// 🔑 Método para comparar contraseñas en el login
+userSchema.methods.compararPassword = async function (passwordIngresada) {
+  return await bcrypt.compare(passwordIngresada, this.password);
+};
 
 module.exports = mongoose.model("User", userSchema);

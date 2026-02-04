@@ -1,0 +1,15 @@
+{
+  "vin": "1HGCM82633A004571",
+  "marca": "Toyota",
+  "modelo": "Corolla",
+  "ano": 2023,
+  "kilometraje": 15000,
+  "combustible": "gasolina",
+  "transmision": "manual",
+  "potencia": 140,
+  "plazas": 5,
+  "color": "Blanco",
+  "estado": "usado",
+  "precio": 25000,
+  "garantia": "no"
+}

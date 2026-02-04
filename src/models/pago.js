@@ -33,8 +33,8 @@ const pagoSchema = new mongoose.Schema(
 );
 
 // Índices recomendados
-pagoSchema.index({ id_venta: 1 });
-pagoSchema.index({ estado_pago: 1 });
-pagoSchema.index({ tipo_pago: 1 });
+//pagoSchema.index({ id_venta: 1 });
+//pagoSchema.index({ estado_pago: 1 });
+//pagoSchema.index({ tipo_pago: 1 });
 
 module.exports = mongoose.model("Pago", pagoSchema);

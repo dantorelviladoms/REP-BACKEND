@@ -59,10 +59,21 @@ const deleteVenta = async (req, res) => {
   }
 };
 
+// Obtener ventas por usuario (carrito)
+const getVentasByUsuario = async (req, res) => {
+  try {
+    const ventas = await ventaService.getVentasByUsuario(req.params.userId);
+    res.json({ status: 'success', data: ventas });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+};
+
 module.exports = {
   createVenta,
   getVentas,
   getVenta,
   updateVenta,
-  deleteVenta
+  deleteVenta,
+  getVentasByUsuario
 };
