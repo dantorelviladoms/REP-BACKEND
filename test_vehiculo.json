@@ -1,28 +1,25 @@
 {
-  "_id": {
-    "$oid": "6979d979bca39c3db4d734b3"
-  },
-  "vin": "WVWZZZ3CZWE123456",
-  "marca": "Maserati",
-  "modelo": "Levante",
+  "vin": "WVWZZZT6ZWE123456",
+  "marca": "Audi",
+  "modelo": "SQ5",
   "ano": 2017,
-  "kilometraje": 88000,
-  "combustible": "gasolina",
+  "kilometraje": 37000,
+  "combustible": "diesel",
   "transmision": "automática",
-  "potencia": 430,
+  "potencia": 367,
   "plazas": 5,
   "estado": "usado",
   "precio": 43000,
   "garantia": "no",
-  "imageFile": "maserati.jpg",
-  "fecha_publicacion": {
-    "$date": "2026-01-28T09:40:09.307Z"
-  },
-  "createdAt": {
-    "$date": "2026-01-28T09:40:09.308Z"
-  },
-  "updatedAt": {
-    "$date": "2026-01-28T09:40:09.308Z"
-  },
+  "imageFile": [
+    "sq5.jpg",
+    "sq5dos.jpg",
+    "sq5tres.jpg",
+    "sq5cuatro.jpg",
+    "sq5.cinco.jpg"
+  ],
+  "fecha_publicacion": "2026-01-28T03:40:09.307Z",
+  "createdAt": "2026-01-28T03:40:09.308Z",
+  "updatedAt": "2026-01-28T03:40:09.308Z",
   "__v": 0
 }

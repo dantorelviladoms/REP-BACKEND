@@ -79,8 +79,8 @@ const vehiculoSchema = new mongoose.Schema(
       default: "no"
     },
     imageFile: {
-      type: String,
-      trim: true
+      type: [String],
+      default: []
     }
   },
   {
