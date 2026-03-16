@@ -7,11 +7,15 @@ const ventaSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "El ID del usuario es obligatorio"]
     },
-    id_producto: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Vehiculo",
-      required: [true, "El ID del vehículo es obligatorio"]
-    },
+    productos: [
+      {
+        id_vehiculo: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Vehiculo",
+          required: [true, "El ID del vehículo es obligatorio"]
+        }
+      }
+    ],
     metodo_pago: {
       type: String,
       enum: ["tarjeta", "efectivo", "transferencia", "paypal", "otro"],

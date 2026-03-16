@@ -10,11 +10,11 @@ const getVentas = async (filter = {}) => {
 };
 
 const getVentaById = async (id) => {
-  return await Venta.findById(id).populate('id_producto');
+  return await Venta.findById(id).populate('productos.id_vehiculo');
 };
 
 const getVentasByUsuario = async (userId) => {
-  return await Venta.find({ id_usuario: userId }).populate('id_producto');
+  return await Venta.find({ id_usuario: userId }).populate('productos.id_vehiculo');
 };
 
 const updateVenta = async (id, updateData) => {
