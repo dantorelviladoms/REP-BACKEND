@@ -1,24 +1,5 @@
 const userService = require('../services/userService');
 
-// Registrar user
-const registrarUser = async (req, res) => {
-  try {
-    const result = await userService.registrarUser(req.body);
-    res.status(201).json({ status: 'success', message: result.message, token: result.token});
-    
-  } catch (error) {
-    res.status(400).json({ status: 'error', message: error.message });
-  }
-};
-// Login user
-const loginUser = async (req, res) => {
-  try {
-    const result = await userService.loginUser(req.body);
-    res.status(200).json({ status: 'success', message: result.message, token: result.token });   
-  } catch (error) {
-    res.status(400).json({ status: 'error', message: error.message });            
-  }
-};
 // Crear un usuario
 const createUser = async (req, res) => {
   try {
@@ -79,8 +60,6 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-  registrarUser,
-  loginUser,
   createUser,
   getUsers,
   getUser,

@@ -5,12 +5,6 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 
 // RUTAS CRUD
-// Registrar usuario (POST)
-router.post('/register', userController.registrarUser);
-
-// Login usuario (POST)
-router.post('/login', userController.loginUser);
-
 // Crear un usuario (POST)
 router.post('/', userController.createUser);
 

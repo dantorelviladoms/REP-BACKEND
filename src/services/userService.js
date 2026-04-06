@@ -2,37 +2,6 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Registrar usuario (con validación de email único)
-const registrarUser = async ({ nombre, apellido, email, telefono, username, password, rol }) => {
-  // comprobar si el email ya existe
-  const existe = await User.findOne({ email });
-  if (existe) throw new Error('El email ya está en uso');
-
-  // crear nuevo usuario
-  const nuevoUsuario = new User({ nombre, apellido, email, telefono, username, password, rol });
-  await nuevoUsuario.save();
-
-  return { message: 'Usuario registrado !!!' };
-};
-
-// Login usuario (comparar contraseña y generar token)
-const loginUser = async ({ email, password }) => {
-  const usuario = await User.findOne({ email });
-  if (!usuario) throw new Error('Usuario no encontrado');
-
-  const esValido = await usuario.compararPassword(password);
-  if (!esValido) throw new Error('Credenciales incorrectas');
-
-  // generar token JWT
-  const token = jwt.sign(
-    { id: usuario._id, rol: usuario.rol },
-    process.env.JWT_SECRET, // clave secreta en el .env
-    { expiresIn: '1h' }
-  );
-
-  return { message: 'Login correcto!', token };
-};
-
 // Crear un usuario (CRUD genérico, sin login/registro)
 const createUser = async (userData) => {
   const newUser = new User(userData);
@@ -63,8 +32,6 @@ const deleteUser = async (id) => {
 };
 
 module.exports = {
-  registrarUser,
-  loginUser,
   createUser,
   getUsers,
   getUserById,
