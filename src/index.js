@@ -15,6 +15,11 @@ const app = express(); // 👈 crea primero la app
 app.use(cors()); // Permite peticiones desde el frontend
 app.use(express.json());
 
+// Documentació Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./docs/swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Conecta a la base de datos
 connectDB();
 
