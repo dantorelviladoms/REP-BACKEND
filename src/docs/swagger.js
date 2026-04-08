@@ -18,11 +18,14 @@ const options = {
             schemas: {
                 User: {
                     type: "object",
+                    required: ["nombre", "apellido", "username", "email", "password"],
                     properties: {
-                        _id: { type: "string", description: "ID únic generat per MongoDB" },
-                        name: { type: "string" },
-                        email: { type: "string" },
-                        role: { type: "string", enum: ["user", "admin"] }
+                        nombre: { type: "string", example: "Juan" },
+                        apellido: { type: "string", example: "Pérez" },
+                        username: { type: "string", example: "juanperez99" },
+                        email: { type: "string", example: "juan@gmail.com" },
+                        password: { type: "string", example: "secreta123" },
+                        role: { type: "string", enum: ["user", "admin"], example: "user" }
                     }
                 },
                 Vehiculo: {
