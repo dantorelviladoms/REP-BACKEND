@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const carritoController = require('../controllers/carritoController');
+const authMiddleware = require('../middleware/authMiddleware');
+const roleMiddleware = require('../middleware/roleMiddleware');
 
 /**
  * @swagger
@@ -36,8 +38,8 @@ router.post('/', carritoController.addToCarrito);
  *       200:
  *         description: Llista de carretons
  */
-// Obtener todos los carritos - admin (GET)
-router.get('/', carritoController.getAllCarritos);
+// Obtener todos los carritos - solo admin (GET)
+router.get('/', authMiddleware, roleMiddleware('admin'), carritoController.getAllCarritos);
 
 /**
  * @swagger
