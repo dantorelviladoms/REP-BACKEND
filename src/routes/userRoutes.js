@@ -3,6 +3,8 @@ const router = express.Router();
 
 // Importamos el controlador
 const userController = require('../controllers/userController');
+const authMiddleware = require('../middleware/authMiddleware');
+const roleMiddleware = require('../middleware/roleMiddleware');
 
 /**
  * @swagger
@@ -17,7 +19,7 @@ const userController = require('../controllers/userController');
  * @swagger
  * /api/user:
  *   post:
- *     summary: Crear un nou usuari
+ *     summary: Crear un nou usuari (Admin)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -31,13 +33,13 @@ const userController = require('../controllers/userController');
  *       201:
  *         description: Usuari creat amb èxit
  */
-router.post('/', userController.createUser);
+router.post('/', authMiddleware, roleMiddleware('admin'), userController.createUser);
 
 /**
  * @swagger
  * /api/user:
  *   get:
- *     summary: Obté tots els usuaris
+ *     summary: Obté tots els usuaris (Admin)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -45,13 +47,13 @@ router.post('/', userController.createUser);
  *       200:
  *         description: Llista d'usuaris
  */
-router.get('/', userController.getUsers);
+router.get('/', authMiddleware, roleMiddleware('admin'), userController.getUsers);
 
 /**
  * @swagger
  * /api/user/{id}:
  *   get:
- *     summary: Obté un usuari pel seu ID
+ *     summary: Obté un usuari pel seu ID (Admin)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -68,13 +70,13 @@ router.get('/', userController.getUsers);
  *       404:
  *         description: Usuari no trobat
  */
-router.get('/:id', userController.getUser);
+router.get('/:id', authMiddleware, roleMiddleware('admin'), userController.getUser);
 
 /**
  * @swagger
  * /api/user/{id}:
  *   put:
- *     summary: Actualitza un usuari pel seu ID
+ *     summary: Actualitza un usuari pel seu ID (Admin)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -94,13 +96,13 @@ router.get('/:id', userController.getUser);
  *       200:
  *         description: Usuari actualitzat
  */
-router.put('/:id', userController.updateUser);
+router.put('/:id', authMiddleware, roleMiddleware('admin'), userController.updateUser);
 
 /**
  * @swagger
  * /api/user/{id}:
  *   delete:
- *     summary: Elimina un usuari pel seu ID
+ *     summary: Elimina un usuari pel seu ID (Admin)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -114,7 +116,7 @@ router.put('/:id', userController.updateUser);
  *       200:
  *         description: Usuari eliminat
  */
-router.delete('/:id', userController.deleteUser);
+router.delete('/:id', authMiddleware, roleMiddleware('admin'), userController.deleteUser);
 
 // Exportamos el router para usarlo en index.js
 module.exports = router;

@@ -23,8 +23,8 @@ const roleMiddleware = require('../middleware/roleMiddleware');
  *       200:
  *         description: Producte afegit
  */
-// Añadir al carrito (POST)
-router.post('/', carritoController.addToCarrito);
+// Añadir al carrito (POST) - usuario autenticado
+router.post('/', authMiddleware, carritoController.addToCarrito);
 
 /**
  * @swagger
@@ -59,8 +59,8 @@ router.get('/', authMiddleware, roleMiddleware('admin'), carritoController.getAl
  *       200:
  *         description: Carretó de l'usuari
  */
-// Obtener carrito de un usuario (GET)
-router.get('/usuario/:userId', carritoController.getCarritoByUsuario);
+// Obtener carrito de un usuario (GET) - usuario autenticado
+router.get('/usuario/:userId', authMiddleware, carritoController.getCarritoByUsuario);
 
 /**
  * @swagger
@@ -80,8 +80,8 @@ router.get('/usuario/:userId', carritoController.getCarritoByUsuario);
  *       200:
  *         description: Item del carretó
  */
-// Obtener item por ID (GET)
-router.get('/:id', carritoController.getCarritoItem);
+// Obtener item por ID (GET) - usuario autenticado
+router.get('/:id', authMiddleware, carritoController.getCarritoItem);
 
 /**
  * @swagger
@@ -101,8 +101,8 @@ router.get('/:id', carritoController.getCarritoItem);
  *       200:
  *         description: Carretó actualitzat
  */
-// Actualizar item del carrito (PUT)
-router.put('/:id', carritoController.updateCarritoItem);
+// Actualizar item del carrito (PUT) - usuario autenticado
+router.put('/:id', authMiddleware, carritoController.updateCarritoItem);
 
 /**
  * @swagger
@@ -122,8 +122,8 @@ router.put('/:id', carritoController.updateCarritoItem);
  *       200:
  *         description: Item eliminat
  */
-// Eliminar item del carrito (DELETE)
-router.delete('/:id', carritoController.deleteCarritoItem);
+// Eliminar item del carrito (DELETE) - usuario autenticado
+router.delete('/:id', authMiddleware, carritoController.deleteCarritoItem);
 
 /**
  * @swagger
@@ -143,7 +143,7 @@ router.delete('/:id', carritoController.deleteCarritoItem);
  *       200:
  *         description: Carretó buidat
  */
-// Vaciar carrito de un usuario (DELETE)
-router.delete('/vaciar/:userId', carritoController.vaciarCarrito);
+// Vaciar carrito de un usuario (DELETE) - usuario autenticado
+router.delete('/vaciar/:userId', authMiddleware, carritoController.vaciarCarrito);
 
 module.exports = router;

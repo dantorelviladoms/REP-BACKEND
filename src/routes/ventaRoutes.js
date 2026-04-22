@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ventaController = require('../controllers/ventaController');
+const authMiddleware = require('../middleware/authMiddleware');
+const roleMiddleware = require('../middleware/roleMiddleware');
 
 /**
  * @swagger
@@ -13,7 +15,7 @@ const ventaController = require('../controllers/ventaController');
  * @swagger
  * /api/ventas:
  *   post:
- *     summary: Crear una nova venda
+ *     summary: Crear una nova venda (Admin)
  *     tags: [Ventas]
  *     security:
  *       - bearerAuth: []
@@ -21,13 +23,14 @@ const ventaController = require('../controllers/ventaController');
  *       201:
  *         description: Venda creada
  */
-// Rutas CRUD para ventas
-router.post('/', ventaController.createVenta);
+// Rutas CRUD para ventas - només admin
+router.post('/', authMiddleware, roleMiddleware('admin'), ventaController.createVenta);
+
 /**
  * @swagger
  * /api/ventas:
  *   get:
- *     summary: Obtenir totes les vendes
+ *     summary: Obtenir totes les vendes (Admin)
  *     tags: [Ventas]
  *     security:
  *       - bearerAuth: []
@@ -35,13 +38,13 @@ router.post('/', ventaController.createVenta);
  *       200:
  *         description: Llista de vendes
  */
-router.get('/', ventaController.getVentas);
+router.get('/', authMiddleware, roleMiddleware('admin'), ventaController.getVentas);
 
 /**
  * @swagger
  * /api/ventas/{id}:
  *   get:
- *     summary: Obtenir venda per ID
+ *     summary: Obtenir venda per ID (Admin)
  *     tags: [Ventas]
  *     security:
  *       - bearerAuth: []
@@ -55,13 +58,13 @@ router.get('/', ventaController.getVentas);
  *       200:
  *         description: Detall de la venda
  */
-router.get('/:id', ventaController.getVenta);
+router.get('/:id', authMiddleware, roleMiddleware('admin'), ventaController.getVenta);
 
 /**
  * @swagger
  * /api/ventas/{id}:
  *   put:
- *     summary: Actualitzar venda per ID
+ *     summary: Actualitzar venda per ID (Admin)
  *     tags: [Ventas]
  *     security:
  *       - bearerAuth: []
@@ -75,13 +78,13 @@ router.get('/:id', ventaController.getVenta);
  *       200:
  *         description: Venda actualitzada
  */
-router.put('/:id', ventaController.updateVenta);
+router.put('/:id', authMiddleware, roleMiddleware('admin'), ventaController.updateVenta);
 
 /**
  * @swagger
  * /api/ventas/{id}:
  *   delete:
- *     summary: Eliminar venda per ID
+ *     summary: Eliminar venda per ID (Admin)
  *     tags: [Ventas]
  *     security:
  *       - bearerAuth: []
@@ -95,13 +98,13 @@ router.put('/:id', ventaController.updateVenta);
  *       200:
  *         description: Venda eliminada
  */
-router.delete('/:id', ventaController.deleteVenta);
+router.delete('/:id', authMiddleware, roleMiddleware('admin'), ventaController.deleteVenta);
 
 /**
  * @swagger
  * /api/ventas/usuario/{userId}:
  *   get:
- *     summary: Obtenir totes les vendes d'un usuari
+ *     summary: Obtenir totes les vendes d'un usuari (Admin)
  *     tags: [Ventas]
  *     security:
  *       - bearerAuth: []
@@ -115,6 +118,6 @@ router.delete('/:id', ventaController.deleteVenta);
  *       200:
  *         description: Llista de vendes de l'usuari
  */
-router.get('/usuario/:userId', ventaController.getVentasByUsuario);
+router.get('/usuario/:userId', authMiddleware, roleMiddleware('admin'), ventaController.getVentasByUsuario);
 
 module.exports = router;

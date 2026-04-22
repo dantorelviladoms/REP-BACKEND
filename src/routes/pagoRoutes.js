@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const pagoController = require('../controllers/pagoController');
+const authMiddleware = require('../middleware/authMiddleware');
+const roleMiddleware = require('../middleware/roleMiddleware');
 
 /**
  * @swagger
@@ -13,7 +15,7 @@ const pagoController = require('../controllers/pagoController');
  * @swagger
  * /api/pagos:
  *   post:
- *     summary: Crear un nou pagament
+ *     summary: Crear un nou pagament (Admin)
  *     tags: [Pagos]
  *     security:
  *       - bearerAuth: []
@@ -21,13 +23,14 @@ const pagoController = require('../controllers/pagoController');
  *       201:
  *         description: Pagament creat
  */
-// Rutas CRUD para pagos
-router.post('/', pagoController.createPago);
+// Rutas CRUD para pagos - només admin
+router.post('/', authMiddleware, roleMiddleware('admin'), pagoController.createPago);
+
 /**
  * @swagger
  * /api/pagos:
  *   get:
- *     summary: Obtenir tots els pagaments
+ *     summary: Obtenir tots els pagaments (Admin)
  *     tags: [Pagos]
  *     security:
  *       - bearerAuth: []
@@ -35,13 +38,13 @@ router.post('/', pagoController.createPago);
  *       200:
  *         description: Llista de pagaments
  */
-router.get('/', pagoController.getPagos);
+router.get('/', authMiddleware, roleMiddleware('admin'), pagoController.getPagos);
 
 /**
  * @swagger
  * /api/pagos/{id}:
  *   get:
- *     summary: Obtenir pagament per ID
+ *     summary: Obtenir pagament per ID (Admin)
  *     tags: [Pagos]
  *     security:
  *       - bearerAuth: []
@@ -55,13 +58,13 @@ router.get('/', pagoController.getPagos);
  *       200:
  *         description: Detall del pagament
  */
-router.get('/:id', pagoController.getPago);
+router.get('/:id', authMiddleware, roleMiddleware('admin'), pagoController.getPago);
 
 /**
  * @swagger
  * /api/pagos/{id}:
  *   put:
- *     summary: Actualitzar pagament per ID
+ *     summary: Actualitzar pagament per ID (Admin)
  *     tags: [Pagos]
  *     security:
  *       - bearerAuth: []
@@ -75,13 +78,13 @@ router.get('/:id', pagoController.getPago);
  *       200:
  *         description: Pagament actualitzat
  */
-router.put('/:id', pagoController.updatePago);
+router.put('/:id', authMiddleware, roleMiddleware('admin'), pagoController.updatePago);
 
 /**
  * @swagger
  * /api/pagos/{id}:
  *   delete:
- *     summary: Eliminar pagament per ID
+ *     summary: Eliminar pagament per ID (Admin)
  *     tags: [Pagos]
  *     security:
  *       - bearerAuth: []
@@ -95,6 +98,6 @@ router.put('/:id', pagoController.updatePago);
  *       200:
  *         description: Pagament eliminat
  */
-router.delete('/:id', pagoController.deletePago);
+router.delete('/:id', authMiddleware, roleMiddleware('admin'), pagoController.deletePago);
 
 module.exports = router;
