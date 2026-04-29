@@ -8,12 +8,16 @@ const pagoRoutes = require('./routes/pagoRoutes');
 const carritoRoutes = require('./routes/carritoRoutes');
 const authRoutes = require('./routes/authRoutes');
 const checkoutRoutes = require('./routes/checkoutRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 
 const cors = require('cors');
+const path = require('path');
 
-const app = express(); // 👈 crea primero la app
-app.use(cors()); // Permite peticiones desde el frontend
+const app = express();
+app.use(cors());
+// Servir archivos estáticos (imágenes de vehículos subidas)
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
 // ⚠️ Webhook de Stripe necesita el body RAW (antes de express.json)
 app.use('/api/checkout/webhook', express.raw({ type: 'application/json' }));
@@ -39,6 +43,7 @@ app.use('/api/pagos', pagoRoutes);
 app.use('/api/carrito', carritoRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/checkout', checkoutRoutes);
+app.use('/api/orders', orderRoutes);
 
 
 const PORT = process.env.PORT || 5000;

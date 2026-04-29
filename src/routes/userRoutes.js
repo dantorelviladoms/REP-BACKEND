@@ -13,7 +13,52 @@ const roleMiddleware = require('../middleware/roleMiddleware');
  *   description: Gestió d'usuaris (CRUD)
  */
 
-// RUTAS CRUD
+// RUTA PERFIL PROPI (accessible per qualsevol usuari autenticat)
+
+/**
+ * @swagger
+ * /api/user/me:
+ *   get:
+ *     summary: Obté el perfil de l'usuari autenticat
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil de l'usuari
+ *       401:
+ *         description: No autenticat
+ */
+router.get('/me', authMiddleware, userController.getMe);
+
+/**
+ * @swagger
+ * /api/user/me:
+ *   put:
+ *     summary: Actualitza el perfil de l'usuari autenticat
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               apellido:
+ *                 type: string
+ *               telefono:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Perfil actualitzat
+ */
+router.put('/me', authMiddleware, userController.updateMe);
+
+// RUTAS CRUD (Admin)
 
 /**
  * @swagger

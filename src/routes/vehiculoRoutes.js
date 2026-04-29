@@ -1,10 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const multer = require('multer');
 
-// Importem el controlador
+// Configuración de multer para subida de imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../public/uploads/vehiculos'));
+  },
+  filename: (req, file, cb) => {
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, unique + path.extname(file.originalname));
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) cb(null, true);
+    else cb(new Error('Solo se permiten imágenes'));
+  }
+});
+
 const vehiculoController = require('../controllers/vehiculoController');
 const authMiddleware = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
+
 
 /**
  * @swagger
@@ -33,8 +54,25 @@ const roleMiddleware = require('../middleware/roleMiddleware');
  *       201:
  *         description: Vehicle creat
  */
-// 🔹 Crear un vehículo (POST) - només admin
+// 🔹 Subir imágenes de vehículo (POST) - solo admin
+// Devuelve array de URLs accesibles desde el frontend
+router.post(
+  '/upload-images',
+  authMiddleware,
+  roleMiddleware('admin'),
+  upload.array('images', 10),
+  (req, res) => {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ status: 'error', message: 'No se subieron imágenes' });
+    }
+    const urls = req.files.map(f => `http://localhost:5000/uploads/vehiculos/${f.filename}`);
+    res.json({ status: 'success', data: urls });
+  }
+);
+
+// 🔹 Crear un vehículo (POST) - solo admin
 router.post('/', authMiddleware, roleMiddleware('admin'), vehiculoController.createVehiculo);
+
 
 /**
  * @swagger
