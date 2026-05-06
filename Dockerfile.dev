@@ -1,0 +1,19 @@
+# Dockerfile de DESENVOLUPAMENT per al backend
+# Usa la imatge completa de Node (no alpine) per compatibilitat amb nodemon
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copia els fitxers de dependències
+COPY package*.json ./
+
+# Instal·la TOTES les dependències (incloses les de dev com nodemon)
+RUN npm install
+
+# No copiem el codi aquí: es munta com a volum en docker-compose.dev.yml
+# Això permet hot-reload sense reconstruir la imatge
+
+EXPOSE 5000
+
+# Arrenca amb nodemon per hot-reload
+CMD ["npm", "run", "dev"]
