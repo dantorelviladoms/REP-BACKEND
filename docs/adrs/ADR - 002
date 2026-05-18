@@ -1,0 +1,8 @@
+# ADR-002: Estructura inicial del projecte
+
+## Context
+El projecte és una plataforma de venda de cubs de llum de segona mà. Inclou diferents components: backend, frontend i scripts d'infraestructura (Docker, desplegament).
+Cal decidir si tot el projecte s'emmagatzemarà en un únic repositori o en repositoris separats.
+
+## Decisió
+S'ha decidit utilitzar un "monorepo", amb carpetes `/backend/`, `/frontend/` i `/infra`. Això permet gestionar fàcilment tot el projecte, provar el frontend i backend.

@@ -1,0 +1,14 @@
+# ADR-003: Suport per a múltiples productes en una sola venda
+
+## Context
+Actualment, el model de `Venta` només permet emmagatzemar un únic `id_producto`. Quan un usuari realitza una compra amb diversos vehicles a la seva cistella, el sistema només registra un dels productes o requeriria múltiples registres de venda independents. Això dificulta el seguiment de transaccions agrupades i no reflecteix correctament la realitat de la compra de l'usuari.
+
+## Decisió
+S'ha decidit modificar l'estructura del model de dades `Venta` per substituir el camp `id_producto` per una llista (array) anomenada `productos`. Cada element d'aquesta llista contindrà la referència al vehicle (`id_vehiculo`).
+
+Això permetrà:
+1. Tenir un únic registre de venda per a tota la cistella de l'usuari.
+2. Simplificar la consulta de l'historial de compres mostrant tots els productes associats a una transacció.
+3. Facilitar el càlcul del preu final i la gestió logística d'un sol pedido.
+
+També s'actualitzaran els serveis del backend per popular correctament les dades de tots els vehicles en una venda i el frontend per enviar l'array complet de productes.
