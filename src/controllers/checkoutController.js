@@ -13,6 +13,7 @@ const createCheckoutSession = async (req, res) => {
     // 1. Validar datos de envío
     if (!shippingAddress || !shippingAddress.name || !shippingAddress.address ||
         !shippingAddress.city || !shippingAddress.postalCode || !shippingAddress.phone) {
+      req.log.warn({ userId }, 'Checkout failed - Missing shipping address fields');
       return res.status(400).json({
         status: 'error',
         message: 'Todos los campos de envío son obligatorios (name, address, city, postalCode, phone)'
@@ -23,6 +24,7 @@ const createCheckoutSession = async (req, res) => {
     const carritoItems = await Carrito.find({ id_usuario: userId }).populate('id_vehiculo');
 
     if (!carritoItems || carritoItems.length === 0) {
+      req.log.warn({ userId }, 'Checkout failed - Cart is empty');
       return res.status(400).json({
         status: 'error',
         message: 'El carrito está vacío'
@@ -34,6 +36,7 @@ const createCheckoutSession = async (req, res) => {
     for (const item of carritoItems) {
       const vehiculo = item.id_vehiculo;
       if (!vehiculo) {
+        req.log.error({ userId, itemId: item._id }, 'Checkout failed - Vehicle not found in cart item');
         return res.status(400).json({
           status: 'error',
           message: `Vehículo no encontrado para el item del carrito ${item._id}`
@@ -61,6 +64,12 @@ const createCheckoutSession = async (req, res) => {
       shippingAddress
     });
     await order.save();
+
+    req.log.info({
+      orderId: order._id,
+      userId: req.user._id,
+      total: order.total
+    }, 'Order created in pending status');
 
     // 6. Crear sesión de Stripe Checkout
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
@@ -92,6 +101,12 @@ const createCheckoutSession = async (req, res) => {
     order.stripeSessionId = session.id;
     await order.save();
 
+    req.log.info({
+      orderId: order._id,
+      userId: req.user._id,
+      sessionId: session.id
+    }, 'Stripe session created successfully');
+
     // 8. Responder con url y sessionId para que el frontend redirija
     res.json({
       status: 'success',
@@ -103,7 +118,10 @@ const createCheckoutSession = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error al crear sesión de checkout:', error);
+    req.log.error({
+      userId: req.user?._id,
+      error: error.message
+    }, 'Checkout session creation failed');
     res.status(500).json({
       status: 'error',
       message: 'Error al crear la sesión de pago',
@@ -127,12 +145,14 @@ const handleWebhook = async (req, res) => {
     } else {
       // En desarrollo sin webhook secret, parsear directamente
       event = JSON.parse(req.body.toString());
-      console.warn('⚠️  Webhook sin validación de firma (desarrollo)');
+      req.log.warn('⚠️ Webhook sin validación de firma (desarrollo)');
     }
   } catch (err) {
-    console.error('Error validando webhook:', err.message);
+    req.log.error({ error: err.message }, 'Error validating webhook signature');
     return res.status(400).json({ message: `Webhook Error: ${err.message}` });
   }
+
+  req.log.info({ eventType: event.type }, 'Stripe webhook event received');
 
   // Procesar el evento
   switch (event.type) {
@@ -150,10 +170,14 @@ const handleWebhook = async (req, res) => {
             // Vaciar el carrito del usuario
             await Carrito.deleteMany({ id_usuario: order.user });
 
-            console.log(`✅ Orden ${orderId} marcada como pagada`);
+            req.log.info({
+              orderId,
+              userId: order.user,
+              amount: session.amount_total / 100
+            }, 'Payment confirmed and order completed');
           }
         } catch (err) {
-          console.error('Error actualizando orden:', err);
+          req.log.error({ orderId, error: err.message }, 'Payment processing failed');
         }
       }
       break;
@@ -169,17 +193,17 @@ const handleWebhook = async (req, res) => {
           if (order && order.status === 'pending') {
             order.status = 'cancelled';
             await order.save();
-            console.log(`❌ Orden ${orderId} cancelada (sesión expirada)`);
+            req.log.info({ orderId }, 'Order cancelled due to stripe session expiration');
           }
         } catch (err) {
-          console.error('Error cancelando orden:', err);
+          req.log.error({ orderId, error: err.message }, 'Order cancellation on stripe session expiration failed');
         }
       }
       break;
     }
 
     default:
-      console.log(`Evento no gestionado: ${event.type}`);
+      req.log.info({ eventType: event.type }, `Unhandled webhook event type: ${event.type}`);
   }
 
   // Stripe espera un 200 para confirmar la recepción
@@ -195,6 +219,7 @@ const getOrderStatus = async (req, res) => {
       .populate('user', 'nombre email');
 
     if (!order) {
+      req.log.warn({ orderId: req.params.id }, 'OrderStatus query failed - Order not found');
       return res.status(404).json({
         status: 'error',
         message: 'Orden no encontrada'
@@ -203,6 +228,7 @@ const getOrderStatus = async (req, res) => {
 
     // Solo el propietario o un admin puede ver la orden
     if (order.user._id.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      req.log.warn({ orderId: req.params.id, userId: req.user._id }, 'OrderStatus query failed - Unauthorized');
       return res.status(403).json({
         status: 'error',
         message: 'No tienes permiso para ver esta orden'
@@ -214,6 +240,7 @@ const getOrderStatus = async (req, res) => {
       data: order
     });
   } catch (error) {
+    req.log.error({ orderId: req.params.id, error: error.message }, 'OrderStatus query failed with error');
     res.status(400).json({
       status: 'error',
       message: error.message

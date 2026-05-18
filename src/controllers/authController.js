@@ -28,11 +28,17 @@ const login = async (req, res) => {
     
     // Buscar usuario
     const usuario = await User.findOne({ email });
-    if (!usuario) return res.status(400).json({ status: 'error', message: 'Usuario no encontrado' });
+    if (!usuario) {
+      req.log.warn({ email }, 'Invalid login attempt - User not found');
+      return res.status(400).json({ status: 'error', message: 'Usuario no encontrado' });
+    }
 
     // Comparar contraseña
     const esValido = await usuario.compararPassword(password);
-    if (!esValido) return res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
+    if (!esValido) {
+      req.log.warn({ email }, 'Invalid login attempt - Credentials incorrect');
+      return res.status(400).json({ status: 'error', message: 'Credenciales incorrectas' });
+    }
 
     // Generar Access Token (corto, ej. 15m)
     const accessToken = jwt.sign(
@@ -52,6 +58,11 @@ const login = async (req, res) => {
     usuario.refreshToken = refreshToken;
     await usuario.save();
 
+    req.log.info({
+      userId: usuario._id,
+      email: usuario.email
+    }, 'User logged in successfully');
+
     res.status(200).json({ 
       status: 'success', 
       message: 'Login correcto', 
@@ -59,6 +70,7 @@ const login = async (req, res) => {
       refreshToken 
     });
   } catch (error) {
+    req.log.error({ error: error.message }, 'Login process error');
     res.status(400).json({ status: 'error', message: error.message });
   }
 };
@@ -75,6 +87,7 @@ const refresh = async (req, res) => {
     // Buscar al usuario y comprobar que el token coincide con el guardado
     const usuario = await User.findById(payload.id);
     if (!usuario || usuario.refreshToken !== refreshToken) {
+      req.log.warn({ userId: payload?.id }, 'Invalid refresh token attempt');
       return res.status(403).json({ status: 'error', message: 'Refresh token inválido' });
     }
 
@@ -87,6 +100,7 @@ const refresh = async (req, res) => {
 
     res.status(200).json({ status: 'success', accessToken: nuevoAccessToken });
   } catch (error) {
+    req.log.error({ error: error.message }, 'Refresh token process error');
     res.status(403).json({ status: 'error', message: 'Refresh token expirado o inválido' });
   }
 };
@@ -100,12 +114,19 @@ const logout = async (req, res) => {
     // Buscar al usuario con este token y eliminarlo
     const usuario = await User.findOne({ refreshToken });
     if (usuario) {
+      req.log.info({
+        userId: usuario._id,
+        email: usuario.email
+      }, 'User logged out');
       usuario.refreshToken = null;
       await usuario.save();
+    } else {
+      req.log.warn('Logout attempt with unknown or expired refresh token');
     }
 
     res.status(200).json({ status: 'success', message: 'Logout correcto' });
   } catch (error) {
+    req.log.error({ error: error.message }, 'Logout process error');
     res.status(500).json({ status: 'error', message: error.message });
   }
 };
