@@ -65,7 +65,7 @@ router.post(
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ status: 'error', message: 'No se subieron imágenes' });
     }
-    const urls = req.files.map(f => `http://localhost:5000/uploads/vehiculos/${f.filename}`);
+    const urls = req.files.map(f => `/uploads/vehiculos/${f.filename}`);
     res.json({ status: 'success', data: urls });
   }
 );
